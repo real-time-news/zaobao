@@ -16,6 +16,8 @@ jobs:
         with:
           node-version: "16.x"
           registry-url: https://npm.pkg.github.com/
+      - name: Install pnpm
+        run: npm install -g pnpm
       - name: Pnpm install
         run: pnpm install
       - name: Run Project
