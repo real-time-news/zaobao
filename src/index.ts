@@ -9,7 +9,6 @@ const date = dayjs().format("YYYY-MM-DD");
 // 通用方法
 const common = async (workFunc) => {
   const startTime = +new Date();
-  console.log(`进入方法`);
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   typeof workFunc === "function" && (await workFunc(page));
@@ -63,23 +62,22 @@ const crawler = async (urls: any, selectors: any) => {
 };
 
 // 使用
-const urls = ["https://www.zaobao.com/realtime/china"];
+const urls = ["https://www.zaobao.com.sg/realtime/china"];
 const selectors = [
   {
     key: "标题",
-    value: "#main-container .f18.m-eps",
+    value: ".article-type-link",
     field: "outerText",
   },
   {
     key: "时间",
-    value: "#main-container .text-tip-color.pdt10",
-    field: "innerText",
+    value: ".article-type-link",
+    field: "pathname",
   },
 ];
 
-// 爬取豆瓣电影
-crawler(urls, selectors).then((result) => {
-  const parseResult = parse(result);
+crawler(urls, selectors).then(async (result) => {
+  const parseResult = await parse(result);
   const filePath = path.resolve(__dirname, `../data/${date}.json`);
 
   // 写入文件
