@@ -65,12 +65,12 @@ const crawler = async (urls: any, selectors: any) => {
 const urls = ["https://www.zaobao.com.sg/realtime/china"];
 const selectors = [
   {
-    key: "标题",
+    key: "title",
     value: ".article-type-link",
     field: "outerText",
   },
   {
-    key: "时间",
+    key: "time",
     value: ".article-type-link",
     field: "pathname",
   },
@@ -78,21 +78,38 @@ const selectors = [
 
 crawler(urls, selectors).then(async (result) => {
   const parseResult = await parse(result);
+
   const filePath = path.resolve(__dirname, `../data/${date}.json`);
 
   fs.readFile(filePath, "utf-8", (err, data) => {
     if (err) {
       console.log(err);
+      const oldData = JSON.parse(data);
+      // 写入文件
+      fs.writeFile(filePath, JSON.stringify(oldData), "utf-8", (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+    } else {
+      const oldData = JSON.parse(data);
+      const newData = [...oldData];
+
+      const reverseResult = parseResult.reverse();
+
+      reverseResult.forEach((item: any) => {
+        const isExist = newData.some((item2) => item2.title === item.title);
+        if (!isExist) {
+          newData.unshift(item);
+        }
+      });
+
+      // 写入文件
+      fs.writeFile(filePath, JSON.stringify(newData), "utf-8", (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
     }
-
-    const oldData = JSON.parse(data);
-    console.log(oldData);
   });
-
-  // // 写入文件
-  // fs.writeFile(filePath, JSON.stringify(parseResult), "utf-8", (err) => {
-  //   if (err) {
-  //     console.log(err);
-  //   }
-  // });
 });
