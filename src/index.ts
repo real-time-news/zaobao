@@ -80,10 +80,19 @@ crawler(urls, selectors).then(async (result) => {
   const parseResult = await parse(result);
   const filePath = path.resolve(__dirname, `../data/${date}.json`);
 
-  // 写入文件
-  fs.writeFile(filePath, JSON.stringify(parseResult), "utf-8", (err) => {
+  fs.readFile(filePath, "utf-8", (err, data) => {
     if (err) {
       console.log(err);
     }
+
+    const oldData = JSON.parse(data);
+    console.log(oldData);
   });
+
+  // // 写入文件
+  // fs.writeFile(filePath, JSON.stringify(parseResult), "utf-8", (err) => {
+  //   if (err) {
+  //     console.log(err);
+  //   }
+  // });
 });
