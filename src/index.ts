@@ -62,21 +62,23 @@ const crawler = async (urls: any, selectors: any) => {
 };
 
 // 使用
-const urls = ["https://www.zaobao.com/realtime/china"];
+const urls = ["https://www.zaobao.com.sg/realtime/china"];
 const selectors = [
   {
     key: "title",
-    value: "div.f18.m-eps",
+    value: ".article-type-link",
     field: "outerText",
   },
   {
     key: "time",
-    value: "div.text-tip-color.pdt10",
-    field: "textContent",
+    value: ".article-type-link",
+    field: "pathname",
   },
 ];
 
-const urls2 = ["https://www.zaobao.com/realtime/china/story20230203-1359245"];
+const urls2 = [
+  "https://www.zaobao.com.sg/realtime/china/story20230203-1359245",
+];
 
 const selectors2 = [
   {
@@ -86,45 +88,48 @@ const selectors2 = [
   },
 ];
 
-// crawler(urls, selectors).then(async (result) => {
-//   const parseResult = await parse(result);
-//   console.log(parseResult);
-// });
-
 crawler(urls, selectors).then(async (result) => {
   const parseResult = await parse(result);
-
   console.log(parseResult);
 
-  const filePath = path.resolve(__dirname, `../data/${date}.json`);
-
-  fs.readFile(filePath, "utf-8", (err, fileData) => {
-    if (!fileData) {
-      // create file
-      fs.writeFile(filePath, JSON.stringify([]), "utf-8", (err) => {
-        if (err) {
-          console.log(err);
-        }
-      });
-    } else {
-      const oldData = JSON.parse(fileData);
-      const newData = [...oldData];
-
-      const reverseResult = parseResult.reverse();
-
-      reverseResult.forEach((item: any) => {
-        const isExist = newData.some((item2) => item2.title === item.title);
-        if (!isExist) {
-          newData.unshift(item);
-        }
-      });
-
-      // write file
-      fs.writeFile(filePath, JSON.stringify(newData), "utf-8", (err) => {
-        if (err) {
-          console.log(err);
-        }
-      });
-    }
+  crawler(urls2, selectors2).then(async (result) => {
+    const parseResult = await parse(result);
+    console.log(parseResult);
   });
 });
+
+// crawler(urls, selectors).then(async (result) => {
+//   const parseResult = await parse(result);
+
+//   const filePath = path.resolve(__dirname, `../data/${date}.json`);
+
+//   fs.readFile(filePath, "utf-8", (err, fileData) => {
+//     if (!fileData) {
+//       // create file
+//       fs.writeFile(filePath, JSON.stringify([]), "utf-8", (err) => {
+//         if (err) {
+//           console.log(err);
+//         }
+//       });
+//     } else {
+//       const oldData = JSON.parse(fileData);
+//       const newData = [...oldData];
+
+//       const reverseResult = parseResult.reverse();
+
+//       reverseResult.forEach((item: any) => {
+//         const isExist = newData.some((item2) => item2.title === item.title);
+//         if (!isExist) {
+//           newData.unshift(item);
+//         }
+//       });
+
+//       // write file
+//       fs.writeFile(filePath, JSON.stringify(newData), "utf-8", (err) => {
+//         if (err) {
+//           console.log(err);
+//         }
+//       });
+//     }
+//   });
+// });
