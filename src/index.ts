@@ -84,9 +84,9 @@ crawler(urls, selectors).then(async (result) => {
   fs.readFile(filePath, "utf-8", (err, data) => {
     if (err) {
       console.log(err);
-      const oldData = JSON.parse(data);
+      // const oldData = JSON.parse(data);
       // 写入文件
-      fs.writeFile(filePath, JSON.stringify(oldData), "utf-8", (err) => {
+      fs.writeFile(filePath, JSON.stringify([]), "utf-8", (err) => {
         if (err) {
           console.log(err);
         }
