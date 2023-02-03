@@ -62,22 +62,39 @@ const crawler = async (urls: any, selectors: any) => {
 };
 
 // 使用
-const urls = ["https://www.zaobao.com.sg/realtime/china"];
+const urls = ["https://www.zaobao.com/realtime/china"];
 const selectors = [
   {
     key: "title",
-    value: ".article-type-link",
+    value: "div.f18.m-eps",
     field: "outerText",
   },
   {
     key: "time",
-    value: ".article-type-link",
-    field: "pathname",
+    value: "div.text-tip-color.pdt10",
+    field: "textContent",
   },
 ];
 
+const urls2 = ["https://www.zaobao.com/realtime/china/story20230203-1359245"];
+
+const selectors2 = [
+  {
+    key: "title",
+    value: "meta[name=description]",
+    field: "content",
+  },
+];
+
+// crawler(urls, selectors).then(async (result) => {
+//   const parseResult = await parse(result);
+//   console.log(parseResult);
+// });
+
 crawler(urls, selectors).then(async (result) => {
   const parseResult = await parse(result);
+
+  console.log(parseResult);
 
   const filePath = path.resolve(__dirname, `../data/${date}.json`);
 
