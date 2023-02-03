@@ -5,6 +5,7 @@ specifiers:
   bluebird: ^3.7.2
   cheerio: 1.0.0-rc.12
   dayjs: ^1.11.7
+  node-fetch: 2.6.1
   puppeteer: ^19.6.2
   typescript: ^4.8.2
   uuid: ^9.0.0
@@ -14,6 +15,7 @@ dependencies:
   bluebird: 3.7.2
   cheerio: 1.0.0-rc.12
   dayjs: 1.11.7
+  node-fetch: 2.6.1
   puppeteer: 19.6.2
   typescript: 4.9.4
   uuid: 9.0.0
@@ -401,6 +403,11 @@ packages:
 
   /ms/2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
+    dev: false
+
+  /node-fetch/2.6.1:
+    resolution: {integrity: sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==}
+    engines: {node: 4.x || >=6.0.0}
     dev: false
 
   /node-fetch/2.6.7:
