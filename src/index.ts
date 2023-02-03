@@ -11,6 +11,7 @@ const common = async (workFunc) => {
   const startTime = +new Date();
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
+  page.setDefaultNavigationTimeout(60000);
   typeof workFunc === "function" && (await workFunc(page));
   await page.close();
   await browser.close();
@@ -70,66 +71,41 @@ const selectors = [
     field: "outerText",
   },
   {
-    key: "time",
+    key: "link",
     value: ".article-type-link",
     field: "pathname",
   },
 ];
 
-const urls2 = [
-  "https://www.zaobao.com.sg/realtime/china/story20230203-1359245",
-];
-
-const selectors2 = [
-  {
-    key: "title",
-    value: "meta[name=description]",
-    field: "content",
-  },
-];
-
 crawler(urls, selectors).then(async (result) => {
   const parseResult = await parse(result);
-  console.log(parseResult);
+  console.log(parseResult, "parseResult");
 
-  crawler(urls2, selectors2).then(async (result) => {
-    const parseResult = await parse(result);
-    console.log(parseResult);
+  const filePath = path.resolve(__dirname, `../data/${date}.json`);
+
+  fs.readFile(filePath, "utf-8", (err, fileData) => {
+    if (!fileData) {
+      fs.writeFile(filePath, JSON.stringify([]), "utf-8", (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+    } else {
+      const oldData = JSON.parse(fileData);
+      const newData = [...oldData];
+      const reverseResult = parseResult.reverse();
+      reverseResult.forEach((item: any) => {
+        const isExist = newData.some((item2) => item2.link === item.link);
+        if (!isExist) {
+          newData.unshift(item);
+        }
+      });
+
+      fs.writeFile(filePath, JSON.stringify(newData), "utf-8", (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+    }
   });
 });
-
-// crawler(urls, selectors).then(async (result) => {
-//   const parseResult = await parse(result);
-
-//   const filePath = path.resolve(__dirname, `../data/${date}.json`);
-
-//   fs.readFile(filePath, "utf-8", (err, fileData) => {
-//     if (!fileData) {
-//       // create file
-//       fs.writeFile(filePath, JSON.stringify([]), "utf-8", (err) => {
-//         if (err) {
-//           console.log(err);
-//         }
-//       });
-//     } else {
-//       const oldData = JSON.parse(fileData);
-//       const newData = [...oldData];
-
-//       const reverseResult = parseResult.reverse();
-
-//       reverseResult.forEach((item: any) => {
-//         const isExist = newData.some((item2) => item2.title === item.title);
-//         if (!isExist) {
-//           newData.unshift(item);
-//         }
-//       });
-
-//       // write file
-//       fs.writeFile(filePath, JSON.stringify(newData), "utf-8", (err) => {
-//         if (err) {
-//           console.log(err);
-//         }
-//       });
-//     }
-//   });
-// });
