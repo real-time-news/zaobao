@@ -81,8 +81,8 @@ crawler(urls, selectors).then(async (result) => {
 
   const filePath = path.resolve(__dirname, `../data/${date}.json`);
 
-  fs.readFile(filePath, "utf-8", (err, data) => {
-    if (err) {
+  fs.readFile(filePath, "utf-8", (err, fileData) => {
+    if (!fileData) {
       console.log(err);
       // const oldData = JSON.parse(data);
       // 写入文件
@@ -92,7 +92,7 @@ crawler(urls, selectors).then(async (result) => {
         }
       });
     } else {
-      const oldData = JSON.parse(data);
+      const oldData = JSON.parse(fileData);
       const newData = [...oldData];
 
       const reverseResult = parseResult.reverse();
