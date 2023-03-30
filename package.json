@@ -10,7 +10,6 @@
     "start": "tsc && node lib/index.js && prettier --write .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
-    "preinstall": "npx only-allow pnpm",
     "prettier": "prettier --write ."
   },
   "dependencies": {
